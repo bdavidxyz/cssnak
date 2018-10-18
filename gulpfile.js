@@ -3,7 +3,7 @@ var browserSync = require('browser-sync').create();
 
 var setupWatchers = function() {
   gulp.watch(['./app/views/**/*.erb',
-              './app/assets/javascripts/**/*.js'], ['reload']);
+    './app/assets/javascripts/**/*.js'], ['reload']);
   gulp.watch(['./app/assets/stylesheets/**/*.scss'], ['reloadCSS'])
 };
 
@@ -17,13 +17,21 @@ gulp.task('reloadCSS', function() {
 
 gulp.task('init', function() {
   browserSync.init({
-      proxy: 'localhost:3000',
-      port: 8000,
-      open: true,
-      notify: true,
-      ui: {
-        port: 8001
+    proxy: 'localhost:3000',
+    port: 8000,
+    open: true,
+    notify: true,
+    snippetOptions: {
+      rule: {
+        match: /<\/head>/i,
+        fn: function (snippet, match) {
+          return snippet + match;
+        }
       }
+    },
+    ui: {
+      port: 8001
+    }
   });
 
   setupWatchers();
