@@ -1,28 +1,32 @@
 var gulp = require('gulp');
-var browserSync = require('browser-sync');
+var browserSync = require('browser-sync').create();
 
-gulp.task('server', function() {
+var setupWatchers = function() {
+  gulp.watch(['./app/views/**/*.erb',
+              './app/assets/javascripts/**/*.js'], ['reload']);
+  gulp.watch(['./app/assets/stylesheets/**/*.scss'], ['reloadCSS'])
+};
+
+gulp.task('reload', function(){
+  return browserSync.reload();
+});
+
+gulp.task('reloadCSS', function() {
+  return browserSync.reload('*.css');
+});
+
+gulp.task('init', function() {
   browserSync.init({
-    proxy: {
-      target: 'localhost:3000',
-      reqHeaders: function () {
-        return { host: 'localhost:8000' };
+      proxy: 'localhost:3000',
+      port: 8000,
+      open: true,
+      notify: true,
+      ui: {
+        port: 8001
       }
-    },
-    port: 8000,
-    open: true,
-    notify: true,
-    snippetOptions: {
-      rule: {
-        match: /<\/head>/i,
-        fn: function (snippet, match) {
-          return snippet + match;
-        }
-      }
-    }
   });
 
-  gulp.watch(paths.html).on('change', reload);
-  gulp.watch(paths.styles, gulp.series('clean', 'styles'));
-  gulp.watch(paths.scripts, gulp.series('scripts'));
+  setupWatchers();
 });
+
+gulp.task('default', ['init']);
