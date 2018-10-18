@@ -1,3 +1,6 @@
+var gulp = require('gulp');
+var browserSync = require('browser-sync');
+
 gulp.task('server', function() {
   browserSync.init({
     proxy: {
@@ -8,7 +11,7 @@ gulp.task('server', function() {
     },
     port: 8000,
     open: true,
-    notify: false,
+    notify: true,
     snippetOptions: {
       rule: {
         match: /<\/head>/i,
@@ -20,6 +23,6 @@ gulp.task('server', function() {
   });
 
   gulp.watch(paths.html).on('change', reload);
-  gulp.watch(paths.stylus, gulp.series('clean', 'styles'));
+  gulp.watch(paths.styles, gulp.series('clean', 'styles'));
   gulp.watch(paths.scripts, gulp.series('scripts'));
 });

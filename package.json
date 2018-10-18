@@ -1,9 +1,9 @@
 {
   "name": "cssnak",
   "private": true,
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "gulp": "latest",
+    "browser-sync": "latest",
     "gulp-util": "latest",
     "gulp-sass": "latest",
     "gulp-coffee": "latest",
